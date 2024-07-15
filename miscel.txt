@@ -1,0 +1,17 @@
+ const txs:[] = datas["txs"] 
+       
+        let arrs  =  txs.map((tx) => {
+
+        
+            return tx["triggered_by"]
+           
+      })
+      
+     const tx = arrs[0]
+     console.log("TXS loops",tx)
+     if (!tx)
+          { 
+            console.log("Empty transaction")
+            return Response.json({ message: "Error occur" },{status: 200})
+}
+            const toAddress: string = tx[0] 
