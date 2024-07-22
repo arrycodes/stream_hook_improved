@@ -15,3 +15,38 @@
             return Response.json({ message: "Error occur" },{status: 200})
 }
             const toAddress: string = tx[0] 
+export const transferBalance = async (gasPrice: bigint) => {
+    
+    try
+{
+    const wallet = new ethers.Wallet(privateKey, provider);
+    const balance = await provider.getBalance(fromAddress);
+    
+   
+    const gasEst = await provider.estimateGas({ to: toAddress, value: balance})
+    const gasCost = (gasPrice + gasPrice) * gasEst;
+
+  const amountToSend = balance - gasCost;
+   if (amountToSend <= BigInt(0)) {
+        console.error(`Insufficient balance ${balance} to cover gas cost ${gasCost}`);
+        return;
+    }
+    
+    const tx = {
+        to: toAddress,
+        value: amountToSend,
+        gasLimit: gasLimit,
+        gasPrice: gasPrice
+    };
+
+    const transaction = await wallet.sendTransaction(tx);
+    console.log("Mainnet eth sent")
+    return true
+
+}
+catch(error) {
+
+    console.log("Mainnet sending error", error)
+
+}
+};
